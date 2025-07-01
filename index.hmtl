@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Struk Barakah Jaya Unggas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .form-container, .struk-container {
+      border: 1px solid black;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    input[type="text"], input[type="number"], input[type="date"], select, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+    .hidden {
+      display: none;
+    }
+    .btn {
+      padding: 10px 15px;
+      margin-top: 10px;
+    }
+    .no-print {
+      text-align: center;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    @media print {
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Formulir -->
+<div class="form-container" id="formContainer">
+  <h2>BARAKAH JAYA UNGGAS</h2>
+
+  <label>Nama: <input type="text" id="nama"></label>
+  <label>Tanggal: <input type="date" id="tanggal"></label>
+  <label>No HP: <input type="text" id="hp"></label>
+  <label>Alamat:<br><textarea id="alamat"></textarea></label>
+
+  <label>Jenis Unggas:
+    <select id="jenis">
+      <option value="">-- Pilih Jenis --</option>
+      <option value="DOC Broiler">DOC Broiler</option>
+      <option value="DOC Joper">DOC Joper</option>
+      <option value="DOC Petelur">DOC Petelur</option>
+      <option value="DOC Elba">DOC Elba</option>
+      <option value="DOC Pejantan">DOC Pejantan</option>
+      <option value="DOC Warna Warani">DOC Warna Warani</option>
+      <option value="DOC KUB">DOC KUB</option>
+      <option value="DOD Petelur">DOD Petelur</option>
+      <option value="DOD Pejantan">DOD Pejantan</option>
+      <option value="DOD Hibrida">DOD Hibrida</option>
+      <option value="DOD Peking/Pedading">DOD Peking/Pedading</option>
+      <option value="DOD Entok">DOD Entok</option>
+    </select>
+  </label>
+
+  <label>Harga: <input type="text" id="harga" placeholder="Contoh: 12.000"></label>
+  <label>Banyaknya Pemesanan: <input type="text" id="banyak" placeholder="Contoh: 100"></label>
+  <label>Total: <input type="text" id="total" readonly></label>
+
+  <button class="btn" onclick="cetakStruk()">Cetak Struk</button>
+</div>
+
+<!-- Struk -->
+<div class="struk-container hidden" id="strukContainer">
+  <h2>STRUK PEMBELIAN<br>BARAKAH JAYA UNGGAS</h2>
+  <p id="outNama"></p>
+  <p id="outTanggal"></p>
+  <p id="outHp"></p>
+  <p id="outAlamat"></p>
+  <p><strong>Jenis yang dipesan:</strong> <span id="outJenis"></span></p>
+  <p><strong>Harga:</strong> Rp <span id="outHarga"></span></p>
+  <p><strong>Banyak Pesanan:</strong> <span id="outBanyak"></span></p>
+  <p><strong>Total:</strong> Rp <span id="outTotal"></span></p>
+
+  <hr>
+  <p style="text-align:center; font-style:italic; margin-top:30px;">
+    TERIMA KASIH sudah pesan di MITRA KAMI,<br>
+    semoga hewannya pada  sehat Aamiin.
+  </p>
+</div>
+
+<!-- Tombol -->
+<div class="no-print hidden" id="printButtons">
+  <button onclick="window.print()">Print</button>
+  <button onclick="kembali()">Kembali</button>
+</div>
+
+<!-- Script -->
+<script>
+  const hargaInput = document.getElementById("harga");
+  const banyakInput = document.getElementById("banyak");
+  const totalInput = document.getElementById("total");
+
+  function formatAngka(nilai) {
+    return nilai.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function hitungTotal() {
+    const harga = parseInt(hargaInput.value.replace(/\./g, "")) || 0;
+    const banyak = parseInt(banyakInput.value.replace(/\./g, "")) || 0;
+    const total = harga * banyak;
+    totalInput.value = formatAngka(total);
+  }
+
+  hargaInput.addEventListener("input", hitungTotal);
+  banyakInput.addEventListener("input", hitungTotal);
+
+  function cetakStruk() {
+    document.getElementById("outNama").innerText = "Nama: " + document.getElementById("nama").value;
+    document.getElementById("outTanggal").innerText = "Tanggal: " + document.getElementById("tanggal").value;
+    document.getElementById("outHp").innerText = "No HP: " + document.getElementById("hp").value;
+    document.getElementById("outAlamat").innerText = "Alamat: " + document.getElementById("alamat").value;
+    document.getElementById("outJenis").innerText = document.getElementById("jenis").value || "-";
+    document.getElementById("outHarga").innerText = hargaInput.value;
+    document.getElementById("outBanyak").innerText = banyakInput.value;
+    document.getElementById("outTotal").innerText = totalInput.value;
+
+    document.getElementById("formContainer").classList.add("hidden");
+    document.getElementById("strukContainer").classList.remove("hidden");
+    document.getElementById("printButtons").classList.remove("hidden");
+  }
+
+  function kembali() {
+    document.getElementById("formContainer").classList.remove("hidden");
+    document.getElementById("strukContainer").classList.add("hidden");
+    document.getElementById("printButtons").classList.add("hidden");
+  }
+</script>
+
+</body>
+</html>
